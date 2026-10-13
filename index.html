@@ -4,153 +4,262 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mahmud.Net | Wi-Fi Voucher Demo</title>
+<meta name="theme-color" content="#10233f">
+<title>Mahmud.Net | 24/7 Data Zone</title>
 <style>
-:root{--navy:#10233f;--blue:#1769e0;--bg:#f3f6fb;--green:#168451}
+:root{--navy:#10233f;--blue:#1769e0;--bg:#f3f6fb;--green:#168451;--muted:#69788e}
 *{box-sizing:border-box}
-body{margin:0;font:15px Arial,sans-serif;background:var(--bg);color:#19283d}
-header{background:var(--navy);color:white;padding:23px 18px}
-header h1{margin:0;font-size:25px}
-header p{margin:8px 0 0;color:#d2def2}
-main{max-width:950px;margin:auto;padding:18px}
-.notice{background:#fff7df;padding:12px;border-radius:10px;font-size:13px;line-height:1.5}
-h2{font-size:20px;margin:23px 0 12px}
-.packages{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.card,.panel{background:white;border:1px solid #e1e7f0;border-radius:13px;padding:16px}
-.card{cursor:pointer;text-align:left;color:inherit;font:inherit}
-.card.selected{border:2px solid var(--blue);background:#edf4ff}
-.card h3{margin:0 0 10px}
-.price{font-size:24px;font-weight:bold;color:var(--blue)}
-.muted{color:#68778c;font-size:13px;line-height:1.5}
-button{background:var(--blue);color:white;border:0;padding:13px 16px;border-radius:8px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5}
-input,select{width:100%;padding:12px;border:1px solid #ccd5e3;border-radius:8px;margin:7px 0 13px;font:inherit}
-label{font-weight:bold;font-size:13px}
-.panel{margin-top:17px}
-.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.result{display:none;background:#e9f8ef;border:1px solid #a9dfbd;border-radius:10px;padding:15px;margin-top:15px;overflow-wrap:anywhere}
-.code{font-size:22px;font-weight:bold;letter-spacing:1px}
-.admin{display:none}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #e5eaf1}
-.tablewrap{overflow-x:auto}
-footer{text-align:center;padding:25px;color:#6c7889;font-size:12px}
+body{margin:0;background:var(--bg);color:#1b2b42;font:15px Arial,sans-serif}
+header{background:var(--navy);color:white;padding:22px 18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{height:45px;width:45px;border:2px solid #8bb8ff;border-radius:12px;display:grid;place-items:center;font-weight:bold;font-size:20px;color:#fff}
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;color:#d3e0f4;font-size:13px}
+main{max-width:540px;margin:auto;padding:18px 14px 35px}
+.steps{display:flex;gap:7px;margin:4px 0 22px}
+.step{flex:1;text-align:center;background:#e2e8f1;color:#65738a;padding:10px 4px;border-radius:8px;font-size:12px}
+.step.active{background:#dce9ff;color:#1459bd;font-weight:bold}
+h2{font-size:22px;margin:0 0 8px}
+.sub{color:var(--muted);line-height:1.5;margin:0 0 20px}
+.notice{padding:12px;background:#fff3d6;color:#77540c;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:17px}
+.plans{display:grid;gap:12px}
+.plan{background:white;border:2px solid #e0e7f0;border-radius:13px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.plan.selected{border-color:var(--blue);background:#edf4ff}
+.plan h3{margin:0 0 6px;font-size:16px}
+.muted{color:var(--muted);font-size:13px}
+.price{font-size:22px;font-weight:bold;color:var(--blue);white-space:nowrap}
+.circle{width:20px;height:20px;border:2px solid #aab7ca;border-radius:50%;flex-shrink:0}
+.selected .circle{border:6px solid var(--blue)}
+.panel{background:white;border:1px solid #e1e7ef;border-radius:13px;padding:17px;margin-bottom:15px}
+label{display:block;font-weight:bold;font-size:13px;margin:15px 0 7px}
+input,select{width:100%;padding:13px;border:1px solid #ccd6e4;border-radius:8px;background:white;font:inherit;color:#1b2b42}
+button{font:inherit;cursor:pointer}
+.primary,.secondary{width:100%;border:0;border-radius:9px;padding:14px;font-weight:bold}
+.primary{background:var(--blue);color:white}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:#edf2f8;color:var(--navy);margin-top:10px}
+.back{background:none;border:0;color:var(--blue);padding:0;margin:0 0 17px;font-weight:bold}
+.summary{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #edf0f5}
+.total{font-size:21px;font-weight:bold;color:var(--navy)}
+.page{display:none}
+.page.active{display:block}
+.success{text-align:center;padding:24px 14px}
+.check{margin:0 auto 17px;width:64px;height:64px;border-radius:50%;background:#e0f6e8;color:var(--green);display:grid;place-items:center;font-size:32px}
+.voucher{background:#edf4ff;border:1px dashed #7ca7ef;border-radius:12px;padding:20px 10px;margin:22px 0}
+.voucher-code{font-size:23px;letter-spacing:1px;font-weight:bold;color:#1459bd;overflow-wrap:anywhere}
+.help{font-size:13px;line-height:1.7;color:#596980;text-align:left}
+footer{text-align:center;padding:22px;color:#78869a;font-size:12px}
+hr{border:0;border-top:1px solid #e7ecf3;margin:17px 0}
 </style>
 </head>
 <body>
 <header>
-  <h1>Mahmud.Net</h1>
-  <p>24/7 Data Zone · Wi-Fi Voucher Portal</p>
+  <div class="brand">
+    <div class="logo">M</div>
+    <div>
+      <h1>Mahmud.Net</h1>
+      <p>24/7 Data Zone · Wi-Fi Voucher Portal</p>
+    </div>
+  </div>
 </header>
 
 <main>
-  <div class="notice">
-    <strong>DEMO ONLY:</strong> Payments are simulated. Voucher codes generated here do not provide internet access. No money is charged and no router is connected.
+  <div class="steps">
+    <div class="step active" id="s1">1. Plan</div>
+    <div class="step" id="s2">2. Checkout</div>
+    <div class="step" id="s3">3. Voucher</div>
   </div>
 
-  <h2>Choose your internet package</h2>
-  <div class="packages" id="packages"></div>
+  <div class="notice">
+    <strong>DEMO MODE:</strong> This prototype does not charge money or connect to a Wi-Fi router. All voucher codes are fictional and cannot provide internet access.
+  </div>
 
-  <section class="panel">
-    <h2 style="margin-top:0">Get your demo voucher</h2>
-    <label for="phone">Phone number (optional)</label>
-    <input id="phone" type="tel" placeholder="e.g. 08012345678">
-    <label for="agent">Agent referral code (optional)</label>
-    <input id="agent" placeholder="e.g. AGENT01">
-    <label for="payment">Demo payment method</label>
-    <select id="payment">
-      <option>Paystack (simulation only)</option>
-      <option>Flutterwave (simulation only)</option>
-      <option>Cash payment (simulation only)</option>
-    </select>
-    <button id="buy" style="width:100%">Simulate purchase</button>
-    <div class="result" id="result" aria-live="polite"></div>
-    <p class="muted">No payment details or bank information are requested.</p>
+  <!-- PAGE 1: PLAN SELECTION -->
+  <section class="page active" id="page1">
+    <h2>Choose your plan</h2>
+    <p class="sub">Select an internet package that suits you.</p>
+    <div class="plans" id="plans">
+      <button class="plan selected" data-plan="daily">
+        <div><h3>Daily Plan</h3><div class="muted">Valid for 24 hours</div></div>
+        <div class="price">₦300</div><div class="circle"></div>
+      </button>
+      <button class="plan" data-plan="weekly">
+        <div><h3>Weekly Plan</h3><div class="muted">Valid for 7 days</div></div>
+        <div class="price">₦1,200</div><div class="circle"></div>
+      </button>
+      <button class="plan" data-plan="monthly">
+        <div><h3>Monthly Plan</h3><div class="muted">Valid for 30 days</div></div>
+        <div class="price">₦4,500</div><div class="circle"></div>
+      </button>
+    </div>
+    <div class="panel" style="margin-top:17px">
+      <div class="summary"><span>Selected package</span><strong id="planName">Daily Plan</strong></div>
+      <div class="summary"><span>Duration</span><span id="planDuration">24 hours</span></div>
+      <div class="summary" style="border:0"><span>Total</span><span class="total" id="planPrice">₦300</span></div>
+      <button class="primary" id="continue">Continue to checkout →</button>
+    </div>
   </section>
 
-  <section class="panel">
-    <div class="row">
-      <h2 style="margin:0">Demo administration</h2>
-      <button id="adminToggle" type="button">Show report</button>
+  <!-- PAGE 2: CHECKOUT -->
+  <section class="page" id="page2">
+    <button class="back" id="back1">← Change plan</button>
+    <h2>Confirm your order</h2>
+    <p class="sub">Review your package before continuing.</p>
+    <div class="panel">
+      <div class="summary"><span>Package</span><strong id="checkoutName"></strong></div>
+      <div class="summary"><span>Duration</span><span id="checkoutDuration"></span></div>
+      <div class="summary" style="border:0"><span>Amount to pay</span><span class="total" id="checkoutPrice"></span></div>
     </div>
-    <div class="admin" id="admin">
-      <div class="packages" style="margin-top:16px">
-        <div class="card"><div class="muted">Demo orders</div><div class="price" id="ordersCount">0</div></div>
-        <div class="card"><div class="muted">Simulated sales</div><div class="price" id="sales">₦0</div></div>
-        <div class="card"><div class="muted">Agent commission estimate</div><div class="price" id="commission">₦0</div></div>
+    <div class="panel">
+      <label for="phone">Phone number (optional)</label>
+      <input id="phone" type="tel" inputmode="tel" placeholder="e.g. 08012345678" autocomplete="tel">
+      <label for="agent">Agent referral code (optional)</label>
+      <input id="agent" type="text" placeholder="Enter referral code">
+      <label for="payment">Payment method</label>
+      <select id="payment">
+        <option value="Paystack">Paystack (demo)</option>
+        <option value="Flutterwave">Flutterwave (demo)</option>
+        <option value="Cash">Cash (demo)</option>
+      </select>
+      <p class="muted">No card details, PIN, or banking credentials are required.</p>
+      <button class="primary" id="pay">Simulate payment</button>
+      <button class="secondary" id="back2">← Go back</button>
+    </div>
+  </section>
+
+  <!-- PAGE 3: VOUCHER DELIVERY -->
+  <section class="page" id="page3">
+    <div class="panel success">
+      <div class="check">✓</div>
+      <h2>Demo voucher generated!</h2>
+      <p class="sub">Your simulated order has completed.</p>
+      <div class="voucher">
+        <div class="muted">YOUR DEMO VOUCHER CODE</div>
+        <div class="voucher-code" id="voucher">DEMO-XXXX-XXXX</div>
+        <button class="primary" id="copy" style="margin-top:16px">Copy voucher code</button>
+        <p id="copyMessage" class="muted" aria-live="polite"></p>
       </div>
-      <h2>Recent demo orders</h2>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Time</th><th>Package</th><th>Amount</th><th>Voucher</th><th>Agent</th></tr></thead>
-          <tbody id="orders"></tbody>
-        </table>
+      <div class="summary"><span>Package</span><strong id="finalName"></strong></div>
+      <div class="summary"><span>Amount</span><strong id="finalPrice"></strong></div>
+      <div class="summary"><span>Payment</span><strong id="finalPayment"></strong></div>
+      <div class="summary"><span>Order reference</span><strong id="reference"></strong></div>
+      <hr>
+      <div class="help">
+        <strong>How to use your voucher</strong>
+        <ol>
+          <li>Connect to the Mahmud.Net Wi-Fi network.</li>
+          <li>Open the network's login page.</li>
+          <li>Enter a valid voucher code when one is issued by the actual service.</li>
+        </ol>
+        This displayed code is only a demonstration. It will not log you in or activate internet access.
       </div>
-      <button id="export" style="margin-top:14px">Export CSV report</button>
-      <button id="reset" style="margin-top:14px;background:#a83232">Reset demo data</button>
-      <p class="muted">Demo report only. There is no admin login yet. Do not use real customer information.</p>
+      <button class="primary" id="restart">Start another demo order</button>
     </div>
   </section>
 </main>
-<footer>Mahmud.Net · Voucher Management Concept · Prototype</footer>
+
+<footer>Mahmud.Net · Customer Portal Prototype</footer>
 
 <script>
-const packages=[
- {id:"daily",name:"Daily Plan",duration:"24 hours",price:300},
- {id:"weekly",name:"Weekly Plan",duration:"7 days",price:1200},
- {id:"monthly",name:"Monthly Plan",duration:"30 days",price:4500}
-];
+const catalog={
+ daily:{name:"Daily Plan",duration:"24 hours",price:300},
+ weekly:{name:"Weekly Plan",duration:"7 days",price:1200},
+ monthly:{name:"Monthly Plan",duration:"30 days",price:4500}
+};
 let selected="daily";
-let orders=[];
+let currentVoucher="";
 
 const money=n=>"₦"+n.toLocaleString("en-NG");
-const packageRoot=document.getElementById("packages");
+const getPlan=()=>catalog[selected];
 
-function renderPackages(){
- packageRoot.innerHTML=packages.map(p=>`
- <button class="card ${selected===p.id?"selected":""}" data-id="${p.id}">
- <h3>${p.name}</h3><div class="price">${money(p.price)}</div>
- <p class="muted">${p.duration}</p>
- </button>`).join("");
- packageRoot.querySelectorAll("button").forEach(b=>b.onclick=()=>{
- selected=b.dataset.id;renderPackages();
+function showPage(number){
+ [1,2,3].forEach(n=>{
+  document.getElementById("page"+n).classList.toggle("active",n===number);
+  document.getElementById("s"+n).classList.toggle("active",n===number);
  });
+ window.scrollTo({top:0,behavior:"smooth"});
 }
-function renderReport(){
- document.getElementById("ordersCount").textContent=orders.length;
- document.getElementById("sales").textContent=money(orders.reduce((s,o)=>s+o.amount,0));
- document.getElementById("commission").textContent=money(orders.filter(o=>o.agent).reduce((s,o)=>s+Math.round(o.amount*.1),0));
- document.getElementById("orders").innerHTML=orders.slice().reverse().map(o=>`
- <tr><td>${o.time}</td><td>${o.name}</td><td>${money(o.amount)}</td>
- <td>${o.voucher}</td><td>${o.agent||"—"}</td></tr>`).join("");
+
+function refreshPlan(){
+ const p=getPlan();
+ document.querySelectorAll("[data-plan]").forEach(button=>{
+  button.classList.toggle("selected",button.dataset.plan===selected);
+ });
+ document.getElementById("planName").textContent=p.name;
+ document.getElementById("planDuration").textContent=p.duration;
+ document.getElementById("planPrice").textContent=money(p.price);
 }
-document.getElementById("buy").onclick=()=>{
- const p=packages.find(x=>x.id===selected);
- const agent=document.getElementById("agent").value.trim().toUpperCase();
- const voucher="DEMO-"+Math.random().toString(36).slice(2,6).toUpperCase()+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
- orders.push({time:new Date().toLocaleString(),name:p.name,amount:p.price,voucher,agent});
- const result=document.getElementById("result");
- result.style.display="block";
- result.innerHTML=`<strong>Demo purchase successful</strong><p>Your simulated ${p.name} voucher:</p><div class="code">${voucher}</div><p class="muted">This is a fictional code. It will not connect to the internet.</p>`;
- renderReport();
-};
-document.getElementById("adminToggle").onclick=()=>{
- const panel=document.getElementById("admin");
- panel.style.display=panel.style.display==="block"?"none":"block";
- document.getElementById("adminToggle").textContent=panel.style.display==="block"?"Hide report":"Show report";
- renderReport();
-};
-document.getElementById("export").onclick=()=>{
- const rows=[["Time","Package","Amount NGN","Voucher","Agent"],...orders.map(o=>[o.time,o.name,o.amount,o.voucher,o.agent])];
- const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
- const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download="mahmud-demo-report.csv";a.click();URL.revokeObjectURL(url);
-};
-document.getElementById("reset").onclick=()=>{
- if(confirm("Clear all temporary demo orders?")){orders=[];renderReport();document.getElementById("result").style.display="none";}
-};
-renderPackages();
+
+document.querySelectorAll("[data-plan]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  selected=button.dataset.plan;
+  refreshPlan();
+ });
+});
+
+document.getElementById("continue").addEventListener("click",()=>{
+ const p=getPlan();
+ document.getElementById("checkoutName").textContent=p.name;
+ document.getElementById("checkoutDuration").textContent=p.duration;
+ document.getElementById("checkoutPrice").textContent=money(p.price);
+ showPage(2);
+});
+
+document.getElementById("back1").addEventListener("click",()=>showPage(1));
+document.getElementById("back2").addEventListener("click",()=>showPage(1));
+
+document.getElementById("pay").addEventListener("click",()=>{
+ const p=getPlan();
+ const button=document.getElementById("pay");
+ button.disabled=true;
+ button.textContent="Generating demo voucher…";
+
+ // SIMULATION ONLY: no payment gateway is contacted.
+ currentVoucher="DEMO-"+randomCode(4)+"-"+randomCode(4);
+ const reference="MN-DEMO-"+Date.now().toString().slice(-7);
+
+ document.getElementById("voucher").textContent=currentVoucher;
+ document.getElementById("finalName").textContent=p.name;
+ document.getElementById("finalPrice").textContent=money(p.price);
+ document.getElementById("finalPayment").textContent=
+  document.getElementById("payment").value+" (simulated)";
+ document.getElementById("reference").textContent=reference;
+ document.getElementById("copyMessage").textContent="";
+ showPage(3);
+
+ button.disabled=false;
+ button.textContent="Simulate payment";
+});
+
+function randomCode(length){
+ const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+ let value="";
+ for(let i=0;i<length;i++){
+  value+=chars[Math.floor(Math.random()*chars.length)];
+ }
+ return value;
+}
+
+document.getElementById("copy").addEventListener("click",async()=>{
+ const message=document.getElementById("copyMessage");
+ try{
+  await navigator.clipboard.writeText(currentVoucher);
+  message.textContent="Demo code copied. Remember: it is not a real access voucher.";
+ }catch(error){
+  message.textContent="Select and copy the code manually: "+currentVoucher;
+ }
+});
+
+document.getElementById("restart").addEventListener("click",()=>{
+ document.getElementById("phone").value="";
+ document.getElementById("agent").value="";
+ document.getElementById("payment").selectedIndex=0;
+ currentVoucher="";
+ refreshPlan();
+ showPage(1);
+});
+
+refreshPlan();
 </script>
 </body>
 </html>
