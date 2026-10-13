@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mahmud.Net | Wi-Fi Voucher Demo</title>
+<style>
+:root{--navy:#10233f;--blue:#1769e0;--bg:#f3f6fb;--green:#168451}
+*{box-sizing:border-box}
+body{margin:0;font:15px Arial,sans-serif;background:var(--bg);color:#19283d}
+header{background:var(--navy);color:white;padding:23px 18px}
+header h1{margin:0;font-size:25px}
+header p{margin:8px 0 0;color:#d2def2}
+main{max-width:950px;margin:auto;padding:18px}
+.notice{background:#fff7df;padding:12px;border-radius:10px;font-size:13px;line-height:1.5}
+h2{font-size:20px;margin:23px 0 12px}
+.packages{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.card,.panel{background:white;border:1px solid #e1e7f0;border-radius:13px;padding:16px}
+.card{cursor:pointer;text-align:left;color:inherit;font:inherit}
+.card.selected{border:2px solid var(--blue);background:#edf4ff}
+.card h3{margin:0 0 10px}
+.price{font-size:24px;font-weight:bold;color:var(--blue)}
+.muted{color:#68778c;font-size:13px;line-height:1.5}
+button{background:var(--blue);color:white;border:0;padding:13px 16px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+input,select{width:100%;padding:12px;border:1px solid #ccd5e3;border-radius:8px;margin:7px 0 13px;font:inherit}
+label{font-weight:bold;font-size:13px}
+.panel{margin-top:17px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.result{display:none;background:#e9f8ef;border:1px solid #a9dfbd;border-radius:10px;padding:15px;margin-top:15px;overflow-wrap:anywhere}
+.code{font-size:22px;font-weight:bold;letter-spacing:1px}
+.admin{display:none}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #e5eaf1}
+.tablewrap{overflow-x:auto}
+footer{text-align:center;padding:25px;color:#6c7889;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Mahmud.Net</h1>
+  <p>24/7 Data Zone · Wi-Fi Voucher Portal</p>
+</header>
+
+<main>
+  <div class="notice">
+    <strong>DEMO ONLY:</strong> Payments are simulated. Voucher codes generated here do not provide internet access. No money is charged and no router is connected.
+  </div>
+
+  <h2>Choose your internet package</h2>
+  <div class="packages" id="packages"></div>
+
+  <section class="panel">
+    <h2 style="margin-top:0">Get your demo voucher</h2>
+    <label for="phone">Phone number (optional)</label>
+    <input id="phone" type="tel" placeholder="e.g. 08012345678">
+    <label for="agent">Agent referral code (optional)</label>
+    <input id="agent" placeholder="e.g. AGENT01">
+    <label for="payment">Demo payment method</label>
+    <select id="payment">
+      <option>Paystack (simulation only)</option>
+      <option>Flutterwave (simulation only)</option>
+      <option>Cash payment (simulation only)</option>
+    </select>
+    <button id="buy" style="width:100%">Simulate purchase</button>
+    <div class="result" id="result" aria-live="polite"></div>
+    <p class="muted">No payment details or bank information are requested.</p>
+  </section>
+
+  <section class="panel">
+    <div class="row">
+      <h2 style="margin:0">Demo administration</h2>
+      <button id="adminToggle" type="button">Show report</button>
+    </div>
+    <div class="admin" id="admin">
+      <div class="packages" style="margin-top:16px">
+        <div class="card"><div class="muted">Demo orders</div><div class="price" id="ordersCount">0</div></div>
+        <div class="card"><div class="muted">Simulated sales</div><div class="price" id="sales">₦0</div></div>
+        <div class="card"><div class="muted">Agent commission estimate</div><div class="price" id="commission">₦0</div></div>
+      </div>
+      <h2>Recent demo orders</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Time</th><th>Package</th><th>Amount</th><th>Voucher</th><th>Agent</th></tr></thead>
+          <tbody id="orders"></tbody>
+        </table>
+      </div>
+      <button id="export" style="margin-top:14px">Export CSV report</button>
+      <button id="reset" style="margin-top:14px;background:#a83232">Reset demo data</button>
+      <p class="muted">Demo report only. There is no admin login yet. Do not use real customer information.</p>
+    </div>
+  </section>
+</main>
+<footer>Mahmud.Net · Voucher Management Concept · Prototype</footer>
+
+<script>
+const packages=[
+ {id:"daily",name:"Daily Plan",duration:"24 hours",price:300},
+ {id:"weekly",name:"Weekly Plan",duration:"7 days",price:1200},
+ {id:"monthly",name:"Monthly Plan",duration:"30 days",price:4500}
+];
+let selected="daily";
+let orders=[];
+
+const money=n=>"₦"+n.toLocaleString("en-NG");
+const packageRoot=document.getElementById("packages");
+
+function renderPackages(){
+ packageRoot.innerHTML=packages.map(p=>`
+ <button class="card ${selected===p.id?"selected":""}" data-id="${p.id}">
+ <h3>${p.name}</h3><div class="price">${money(p.price)}</div>
+ <p class="muted">${p.duration}</p>
+ </button>`).join("");
+ packageRoot.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+ selected=b.dataset.id;renderPackages();
+ });
+}
+function renderReport(){
+ document.getElementById("ordersCount").textContent=orders.length;
+ document.getElementById("sales").textContent=money(orders.reduce((s,o)=>s+o.amount,0));
+ document.getElementById("commission").textContent=money(orders.filter(o=>o.agent).reduce((s,o)=>s+Math.round(o.amount*.1),0));
+ document.getElementById("orders").innerHTML=orders.slice().reverse().map(o=>`
+ <tr><td>${o.time}</td><td>${o.name}</td><td>${money(o.amount)}</td>
+ <td>${o.voucher}</td><td>${o.agent||"—"}</td></tr>`).join("");
+}
+document.getElementById("buy").onclick=()=>{
+ const p=packages.find(x=>x.id===selected);
+ const agent=document.getElementById("agent").value.trim().toUpperCase();
+ const voucher="DEMO-"+Math.random().toString(36).slice(2,6).toUpperCase()+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
+ orders.push({time:new Date().toLocaleString(),name:p.name,amount:p.price,voucher,agent});
+ const result=document.getElementById("result");
+ result.style.display="block";
+ result.innerHTML=`<strong>Demo purchase successful</strong><p>Your simulated ${p.name} voucher:</p><div class="code">${voucher}</div><p class="muted">This is a fictional code. It will not connect to the internet.</p>`;
+ renderReport();
+};
+document.getElementById("adminToggle").onclick=()=>{
+ const panel=document.getElementById("admin");
+ panel.style.display=panel.style.display==="block"?"none":"block";
+ document.getElementById("adminToggle").textContent=panel.style.display==="block"?"Hide report":"Show report";
+ renderReport();
+};
+document.getElementById("export").onclick=()=>{
+ const rows=[["Time","Package","Amount NGN","Voucher","Agent"],...orders.map(o=>[o.time,o.name,o.amount,o.voucher,o.agent])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download="mahmud-demo-report.csv";a.click();URL.revokeObjectURL(url);
+};
+document.getElementById("reset").onclick=()=>{
+ if(confirm("Clear all temporary demo orders?")){orders=[];renderReport();document.getElementById("result").style.display="none";}
+};
+renderPackages();
+</script>
+</body>
+</html>
